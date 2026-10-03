@@ -674,7 +674,7 @@ public final class MainActivity extends Activity {
     }
 
     private void showColorPicker() {
-        int[] hsv = new int[3];
+        float[] hsv = new float[3];
         Color.colorToHSV(selectedColor, hsv);
         LinearLayout content = column();
         content.setPadding(dp(20), dp(5), dp(20), dp(10));
