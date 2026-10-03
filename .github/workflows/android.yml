@@ -21,12 +21,16 @@ jobs:
         run: |
           export ANDROID_HOME="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
           echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "Using Android SDK at: $ANDROID_HOME"
           SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f 2>/dev/null | head -n 1)"
           if [ -z "$SDKMANAGER" ]; then
             echo "Android SDK command-line tools were not found at $ANDROID_HOME" >&2
             exit 1
           fi
-          yes | "$SDKMANAGER" --licenses >/dev/null
+          echo "Using sdkmanager at: $SDKMANAGER"
+          set +o pipefail
+          yes | "$SDKMANAGER" --licenses
+          set -o pipefail
           "$SDKMANAGER" --sdk_root="$ANDROID_HOME" "platforms;android-35" "build-tools;35.0.0"
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
